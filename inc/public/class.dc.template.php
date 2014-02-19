@@ -392,21 +392,36 @@ class dcTemplate extends template
 		$p[0] = '0';	# encode_xml
 		$p[1] = '0';	# remove_html
 		$p[2] = '0';	# cut_string
-		$p[3] = '0';	# lower_case
-		$p[4] = '0';	# upper_case or capitalize
-		$p[5] = '0';    # encode_url
+                $p[3] = '0';    # lower_case, upper_case or capitalize
+                $p[4] = '0';    # encode_url
 
-		$p[0] = (integer) (!empty($attr['encode_xml']) || !empty($attr['encode_html']));
-		$p[1] = (integer) !empty($attr['remove_html']);
+                $p[0] = (integer) (!empty($attr['encode_xml']) || !empty($attr['encode_html']));
+                $p[1] = (integer) !empty($attr['remove_html']);
 
-		if (!empty($attr['cut_string']) && (integer) $attr['cut_string'] > 0) {
-			$p[2] = (integer) $attr['cut_string'];
-		}
+                if (!empty($attr['cut_string']) && (integer) $attr['cut_string'] > 0) {
+                        $p[2] = (integer) $attr['cut_string'];
+                }
 
-		$p[3] = (integer) !empty($attr['lower_case']);
-		$p[4] = (integer) !empty($attr['upper_case']);
-		$p[4] = (!empty($attr['capitalize']) ? 2 : $p[4]);
-		$p[5] = (integer) !empty($attr['encode_url']);
+                if (isset($attr['case'])) {
+                        switch (strtolower($attr['case'])) {
+                                case 'lower'      : $p[3] = 1; break;
+                                case 'upper'      : $p[3] = 2; break;
+                                case 'capitalize' : $p[3] = 3; break;
+                                case 'title'      : $p[3] = 4; break;
+
+                        }
+                }
+                if (!empty($attr['lower_case'])) {
+                        $p[3] = 1;
+                }
+                if (!empty($attr['upper_case'])) {
+                        $p[3] = 2;
+                }
+                if (!empty($attr['capitalize'])) {
+                        $p[3] = 3;
+                }
+
+                $p[4] = (integer) !empty($attr['encode_url']);
 
 		return "context::global_filter(%s,".implode(",",$p).",'".addslashes($this->current_tag)."')";
 	}
