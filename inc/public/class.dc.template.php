@@ -210,6 +210,9 @@ class dcTemplate extends template
 
 		# Generic
 		$this->addValue('else',array($this,'GenericElse'));
+                $this->addBlock('IfHadEllipsis',array($this,'IfHadEllipsis'));
+                $this->addBlock('IfNotHadEllipsis',array($this,'IfNotHadEllipsis'));
+
 	}
 
 	public function getData($________)
@@ -3053,6 +3056,19 @@ class dcTemplate extends template
 	{
 		return '<?php else: ?>';
 	}
+	
+        public function IfNotHadEllipsis($attr,$content)
+        {
+                return '<?php global $last_string_was_cut; if (!$last_string_was_cut) {  ?>'.$content.'<?php } ?>';
+        }
+
+        public function IfHadEllipsis($attr,$content)
+        {
+                return '<?php global $last_string_was_cut; if ($last_string_was_cut) {  ?>'.$content.'<?php } ?>';
+        }
+
+	
+	
 }
 
 # Template nodes, for parsing purposes
