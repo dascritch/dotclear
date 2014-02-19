@@ -119,9 +119,14 @@ class context
                         $str = self::encode_xml($str);
                 }
 
+                global $last_string_was_cut ; # yes, this one is ugly , over ugly :(
                 if ($cut_string) {
-                        $str = self::cut_string($str,(integer) $cut_string);
+                        $str2 = self::cut_string($str,(integer) $cut_string);
+                        global $last_string_was_cut ;
+                        $last_string_was_cut = ( $str !== $str2 );
+                        $str = $str2. ($last_string_was_cut?$ellipsis :'');
                 }
+
 
                 if ($case > 0) {
                         switch ($case) {
