@@ -172,13 +172,19 @@ class context
 		return mb_strtoupper($str);
 	}
 
-	public static function capitalize($str)
-	{
-		if ($str != '') {
-		   $str[0] = mb_strtoupper($str[0]);
-		}
-		return $str;
-	}
+
+        public static function capitalize($str)
+        {
+                if ($str != '') {
+                   $str = mb_strtoupper(mb_substr($str[0],0,1)).mb_substr($str,1);
+                }
+                return $str;
+        }
+
+        public static function title_case($str)
+        {       
+                return mb_convert_case($str,MB_CASE_TITLE);
+        }
 
 	public static function categoryPostParam(&$p)
 	{
