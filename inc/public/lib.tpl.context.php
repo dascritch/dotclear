@@ -101,7 +101,7 @@ class context
 
         # Static methods
         public static function global_filter($str,
-        $encode_xml, $remove_html, $cut_string, $lower_case, $upper_case ,$encode_url ,$tag='')
+        $encode_xml, $remove_html, $cut_string, $case ,$encode_url ,$tag='')
         {
                 $args = func_get_args();
                 array_pop($args);
@@ -123,15 +123,16 @@ class context
                         $str = self::cut_string($str,(integer) $cut_string);
                 }
 
-                if ($lower_case) {
-                        $str = self::lower_case($str);
-                } elseif ($upper_case) {
-                        if ($upper_case == 2) {
-                                $str = self::capitalize($str);
-                        } else {
-                                $str = self::upper_case($str);
+                if ($case > 0) {
+                        switch ($case) {
+                                case 1 : $str = self::lower_case($str); break;
+                                case 2 : $str = self::upper_case($str); break;
+                                case 3 : $str = self::capitalize($str); break;
+                                case 4 : $str = self::title_case($str); break;
+
                         }
                 }
+
                 if ($encode_url) {
                         $str = self::encode_url($str);
                 }
