@@ -387,13 +387,14 @@ class dcTemplate extends template
 		}
 	}
 
-	public function getFilters($attr)
-	{
-		$p[0] = '0';	# encode_xml
-		$p[1] = '0';	# remove_html
-		$p[2] = '0';	# cut_string
+        public function getFilters($attr)
+        {
+                $p[0] = '0';    # encode_xml
+                $p[1] = '0';    # remove_html
+                $p[2] = '0';    # cut_string
                 $p[3] = '0';    # lower_case, upper_case or capitalize
                 $p[4] = '0';    # encode_url
+                $p[5] = "'…'";  # ellipsis
 
                 $p[0] = (integer) (!empty($attr['encode_xml']) || !empty($attr['encode_html']));
                 $p[1] = (integer) !empty($attr['remove_html']);
@@ -423,8 +424,13 @@ class dcTemplate extends template
 
                 $p[4] = (integer) !empty($attr['encode_url']);
 
-		return "context::global_filter(%s,".implode(",",$p).",'".addslashes($this->current_tag)."')";
-	}
+                if (!empty($attr['ellipsis'])) {
+                        $p[5] = "'".strtr($attr['ellipsis'],array("'"=>"\\'"))."'" ;
+                }
+
+                return "context::global_filter(%s,".implode(",",$p).",'".addslashes($this->current_tag)."')";
+        }
+
 
 	public static function getOperator($op)
 	{
