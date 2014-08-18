@@ -47,6 +47,7 @@ $(function() {
 		// to all siblings.
 		$(this).toggleClass('expanded').
 			nextAll().slideToggle('fast');
+		return false;
 	};
 
 	var remove_focus = function() {
@@ -54,7 +55,7 @@ $(function() {
 	  $(this).blur();
 	};
 
-	$(document).ready (function () {
+	$(function () {
 		if ($(window).width() < 1024) {
 
 			// Set toggle class to each #sidebar h2
@@ -66,12 +67,13 @@ $(function() {
 			// Add a link to each h2.toggle element.
 			$('h2.toggle').each(add_link);
 
-			// Add a click event handler to all h2.toggle elements.
-			$('h2.toggle').click(toggle);
-
 			// Remove the focus from the link tag when accessed with a mouse.
 			$('h2.toggle a').mouseup(remove_focus);
 		}
+		
+		
+		// Add a click event handler to all h2.toggle elements.
+		$(document).on('click','h2.toggle',toggle);
 	})
 
 });
